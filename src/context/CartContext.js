@@ -30,27 +30,38 @@ export function CartProvider({ children }) {
     });
   };
 
+  // 🔹 Cập nhật số lượng 
+  const updateQuantity = (id, quantity) => {
+    setCart((prev) =>
+      prev.map((p) =>
+        p.MaSP === id 
+          ? { 
+            ...p, 
+            quantity: quantity === "" ? "" : Math.max(1, Number(quantity)),
+           } 
+          : p
+      )
+    );
+  };
+
   // 🔹 Xóa sản phẩm
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((p) => p.MaSP !== id));
   };
 
-  // 🔹 Cập nhật số lượng (BẮT BUỘC CÓ HÀM NÀY)
-  const updateQuantity = (id, quantity) => {
-    setCart((prev) =>
-      prev.map((p) =>
-        p.MaSP === id ? { ...p, quantity: Math.max(1, quantity) } : p
-      )
-    );
+  const clearCart = () => {
+    setCart([]);
   };
 
   // 🔹 Tính tổng tiền
   const total = cart.reduce((sum, item) => sum + item.DonGia * item.quantity, 0);
+    // 🔹 Tính tổng số lượng sản phẩm trong giỏ
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   // 🔹 ✅ Quan trọng: phải truyền `updateQuantity` vào Provider
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, total }}
+      value={{ cart, addToCart, removeFromCart, updateQuantity, total, totalQuantity, clearCart }}
     >
       {children}
     </CartContext.Provider>

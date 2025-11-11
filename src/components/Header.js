@@ -1,8 +1,12 @@
+"use client";
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 <Link href="/cart" className="bg-cyan-500 text-white px-4 py-2 rounded">
   Giỏ hàng
 </Link>
 export default function Header() {
+  const { totalQuantity } = useCart();
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center p-4">
@@ -20,10 +24,16 @@ export default function Header() {
         </nav>
 
         {/* Nút giỏ hàng */}
-        <button className="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600">
-          {/* 🛒 Giỏ hàng */}
-          <Link href="/cart">Giỏ hàng</Link>
-        </button>
+
+        <Link href="/cart" className="relative hover:text-yellow-300">
+          <ShoppingCart size={26} />
+          {/* ✅ hiển thị badge số lượng */}
+          {totalQuantity > 0 && (
+            <span className="absolute -top-2 -right-3 bg-red-500 text-xs font-bold rounded-full px-2 py-0.5">
+              {totalQuantity}
+            </span>
+          )}
+        </Link>
       </div>
     </header>
   );

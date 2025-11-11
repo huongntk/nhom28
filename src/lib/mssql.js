@@ -20,3 +20,6 @@ export async function getConnection() {
     throw err;
   }
 }
+
+export default { getConnection };
+export { sql };
