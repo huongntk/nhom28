@@ -19,8 +19,8 @@ export default function Header() {
         <nav className="space-x-6">
           <Link href="/" className="hover:text-cyan-500">Trang chủ</Link>
           <Link href="/products" className="hover:text-cyan-500">Sản phẩm</Link>
-          <Link href="/about" className="hover:text-cyan-500">Giới thiệu</Link>
-          <Link href="/contact" className="hover:text-cyan-500">Liên hệ</Link>
+          {/* <Link href="/about" className="hover:text-cyan-500">Giới thiệu</Link>
+          <Link href="/contact" className="hover:text-cyan-500">Liên hệ</Link> */}
         </nav>
 
         {/* Nút giỏ hàng */}

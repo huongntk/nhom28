@@ -24,7 +24,8 @@ export default function ProductCard({ product }) {
           className="object-contain rounded-xl  hover:scale-105 transition duration-300"
         />
       </div>
-      <h2 className="text-lg font-semibold mt-2">{product.TenSP}</h2>
+      <h2 className="text-lg font-semibold text-center text-gray-800 hover:text-blue-600 transition-colors
+                     line-clamp-2 min-h-12 flex items-center justify-center" style={{ lineHeight: '1.5rem' }}>{product.TenSP}</h2>
       </Link>
       <p className="text-red-600 font-bold">
         {Number(product.DonGia).toLocaleString()} ₫</p>

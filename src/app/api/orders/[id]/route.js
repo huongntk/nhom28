@@ -1,8 +1,15 @@
 import { getConnection } from "@/lib/mssql";
-
-export async function GET(req, context) {
+import { NextResponse } from "next/server";
+export async function GET(req, { params }) {
+  let pool;
   try {
-    const { id } = await context.params;
+    const { id } = params;
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: "Thiếu ID đơn hàng" },
+        { status: 400 }
+      );
+    }
     const pool = await getConnection();
     
 
@@ -19,10 +26,29 @@ export async function GET(req, context) {
         JOIN SanPham SP ON CTHD.MaSP = SP.MaSP
         WHERE CTHD.MaHD = @MaHD
       `);
+      const items = result.recordset || [];
 
-    return Response.json(result.recordset || [], { status: 200 });
+    if (items.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "Không tìm thấy chi tiết đơn hàng" },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(
+      { success: true, data: items },
+      { status: 200 }
+    );
+    // return Response.json(result.recordset || [], { status: 200 });
   } catch (error) {
     console.error("❌ Lỗi lấy chi tiết đơn hàng:", error);
-    return Response.json({ error: "Lỗi server" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Lỗi server" },
+      { status: 500 }
+    );
+    // return Response.json({ error: "Lỗi server" }, { status: 500 });
+  }finally {
+    if (pool) await pool.close();
   }
 }
+
+
