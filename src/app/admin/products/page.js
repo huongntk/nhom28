@@ -42,12 +42,12 @@ export default function AdminProducts() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">📦 Danh sách sản phẩm</h1>
-        {/* <Link
+        <Link
           href="/admin/products/add"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           ➕ Thêm sản phẩm
-        </Link> */}
+        </Link>
       </div>
 
       <table className="w-full border-collapse bg-white shadow-md rounded">
@@ -57,7 +57,7 @@ export default function AdminProducts() {
             <th className="border p-2">Tên SP</th>
             <th className="border p-2">Giá</th>
             <th className="border p-2">Hình</th>
-            {/* <th className="border p-2">Hành động</th> */}
+            <th className="border p-2">Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -69,10 +69,10 @@ export default function AdminProducts() {
               <td className="border p-2 text-center">
                 <img src={p.HinhAnh} alt={p.TenSP} className="w-16 h-16 object-cover mx-auto" />
               </td>
-              {/* <td className="border p-2 text-center">
+              <td className="border p-2 text-center">
                 <Link href={`/admin/products/edit/${p.MaSP}`} className="text-blue-600 hover:underline mr-2">Sửa</Link>
                 <button onClick={() => handleDelete(p.MaSP)} className="text-red-600 hover:underline">Xóa</button>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -39,7 +39,25 @@ export default function EditProductClient({ initialProduct, productId }) {
         toast.success(`✅ Cập nhật sản phẩm ${productId} thành công!`);
         router.push("/admin/products");
       } else {
-        const errorData = await res.json();
+        // === KHẮC PHỤC LỖI SYNTAXERROR TẠI ĐÂY ===
+        let errorData = { error: 'Cập nhật thất bại' };
+        
+        try {
+            // 1. Đọc body dưới dạng text trước
+            const text = await res.text(); 
+            if (text) {
+                // 2. Nếu có body, thử parse JSON
+                errorData = JSON.parse(text); 
+            } else {
+                // 3. Nếu body trống, lấy thông báo từ status text
+                errorData.error = res.statusText || 'Lỗi không xác định từ máy chủ.';
+            }
+        } catch (e) {
+            // Lỗi xảy ra khi parse (dù đã kiểm tra), dùng status text
+            console.error("Lỗi khi đọc JSON response:", e);
+            errorData.error = res.statusText || 'Lỗi không xác định từ máy chủ.';
+        }
+        
         toast.error(`❌ Lỗi: ${errorData.error || 'Cập nhật thất bại'}`);
       }
     } catch (error) {

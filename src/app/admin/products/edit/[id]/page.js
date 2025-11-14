@@ -3,7 +3,7 @@ import EditProductClient from "./EditProductClient";
 
 // Server Component để fetch dữ liệu sản phẩm
 export default async function EditProductPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   // Gọi API Route GET để lấy thông tin sản phẩm hiện tại
   const res = await fetch(`http://localhost:3000/api/products/${id}`, {

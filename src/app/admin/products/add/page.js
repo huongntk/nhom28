@@ -16,9 +16,16 @@ const initialProductState = {
 
 export default function AddProductPage() {
   const [formData, setFormData] = useState(initialProductState);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+    // Xử lý thay đổi file hình ảnh
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+    
 
+   
   // Xử lý thay đổi input
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -28,18 +35,30 @@ export default function AddProductPage() {
     }));
   };
 
-  // Xử lý submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    // Xử lý submit form
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+    if (!selectedFile) {
+        toast.error("❌ Vui lòng chọn một file hình ảnh để tải lên!");
+        setLoading(false);
+        return;
+    }
+    // TẠO FORM DATA để gửi cả file và các trường dữ liệu khác
+    const data = new FormData();
+    data.append("file", selectedFile);
+    // Thêm các trường dữ liệu khác vào FormData
+    data.append("TenSP", formData.TenSP);
+    data.append("DonGia", formData.DonGia);
+    data.append("MoTa", formData.MoTa);
+    data.append("SoLuong", formData.SoLuong);
 
     try {
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        
+        body: data,
       });
 
       if (res.ok) {
@@ -109,13 +128,13 @@ export default function AddProductPage() {
 
         {/* Link Hình ảnh */}
         <div>
-          <label htmlFor="HinhAnh" className="block text-sm font-medium text-gray-700">Link Hình ảnh</label>
+          <label htmlFor="HinhAnh" className="block text-sm font-medium text-gray-700">Tải lên Hình ảnh Sản phẩm</label>
           <input
-            type="text"
+            type="file" 
             id="HinhAnh"
             name="HinhAnh"
-            value={formData.HinhAnh}
-            onChange={handleChange}
+            onChange={handleFileChange} 
+            accept="image/*" // Chỉ chấp nhận file ảnh
             required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"
           />
